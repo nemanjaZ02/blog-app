@@ -3,12 +3,18 @@ import api from '../api/axios'
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
-        user: JSON.parse(localStorage.getItem('user')) || null,
+        user: (() => {
+            try {
+                return JSON.parse(localStorage.getItem('user')) || null
+            } catch {
+                return null
+            }
+        })(),
         token: localStorage.getItem('token') || null,
     }),
 
     getters: {
-        isLoggedIn: (state) => !!state.token,
+        isLoggedIn: (state) => !!state.token && !!state.user,
         isAdmin: (state) => state.user?.role === 'admin',
     },
 
@@ -32,15 +38,15 @@ export const useAuthStore = defineStore('auth', {
         },
 
         async logout() {
-			try {
-				await api.post('/logout')
-			} catch (e) {
-				// ignore
-			}
-			this.token = null
-			this.user = null
-			localStorage.removeItem('token')
-			localStorage.removeItem('user')
-		},
+            try {
+                await api.post('/logout')
+            } catch (e) {
+                // ignore
+            }
+            this.token = null
+            this.user = null
+            localStorage.removeItem('token')
+            localStorage.removeItem('user')
+        },
     },
 })

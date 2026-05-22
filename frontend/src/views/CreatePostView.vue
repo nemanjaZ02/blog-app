@@ -15,7 +15,12 @@ async function handleSubmit() {
     const post = await postsStore.createPost(title.value, content.value)
     router.push(`/posts/${post.id}`)
   } catch (e) {
-    error.value = 'Failed to create post.'
+    if (e.response?.data?.errors) {
+      const errors = e.response.data.errors
+      error.value = Object.values(errors).flat().join(', ')
+    } else {
+      error.value = 'Failed to create post.'
+    }
   }
 }
 </script>

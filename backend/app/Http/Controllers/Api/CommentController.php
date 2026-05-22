@@ -12,7 +12,7 @@ class CommentController extends Controller
     public function store(Request $request, Post $post)
 {
         $request->validate([
-            'comment'    => ['required', 'string', 'min:2', 'max:1000'],
+            'comment'    => ['required', 'string', 'min:1', 'max:1000'],
             'guest_name' => ['nullable', 'string', 'max:100'],
         ]);
 

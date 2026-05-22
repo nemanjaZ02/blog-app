@@ -32,10 +32,18 @@ async function handleDelete() {
 }
 
 async function handleComment() {
-  await postsStore.addComment(route.params.id, comment.value, guestName.value || null)
-  comment.value = ''
-  guestName.value = ''
-  await postsStore.fetchPost(route.params.id)
+  try {
+    await postsStore.addComment(route.params.id, comment.value, guestName.value || null)
+    comment.value = ''
+    guestName.value = ''
+    await postsStore.fetchPost(route.params.id)
+  } catch (e) {
+    if (e.response?.data?.errors) {
+      alert(Object.values(e.response.data.errors).flat().join(', '))
+    } else {
+      alert('Failed to add comment.')
+    }
+  }
 }
 
 async function handleDeleteComment(commentId) {

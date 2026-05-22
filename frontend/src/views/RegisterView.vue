@@ -17,7 +17,12 @@ async function handleRegister() {
     await authStore.register(name.value, email.value, password.value, passwordConfirmation.value)
     router.push('/')
   } catch (e) {
-    error.value = 'Registration failed. Please try again.'
+    if (e.response?.data?.errors) {
+      const errors = e.response.data.errors
+      error.value = Object.values(errors).flat().join(', ')
+    } else {
+      error.value = 'Registration failed. Please try again.'
+    }
   }
 }
 </script>

@@ -22,7 +22,12 @@ async function handleSubmit() {
     await postsStore.updatePost(route.params.id, title.value, content.value)
     router.push('/posts/' + route.params.id)
   } catch (e) {
-    error.value = 'Failed to update post.'
+    if (e.response?.data?.errors) {
+      const errors = e.response.data.errors
+      error.value = Object.values(errors).flat().join(', ')
+    } else {
+      error.value = 'Failed to update post.'
+    }
   }
 }
 </script>
