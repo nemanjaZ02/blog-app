@@ -10,22 +10,20 @@ A simple blog application built with Laravel REST API and Vue.js frontend, with 
 ## Setup & Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/nemanjaZ02/blog-app.git
 cd blog-app
 ```
 
 2. Start Docker containers:
+
 ```bash
 docker compose up --build
 ```
 
-3. Run migrations and seed the database:
-```bash
-docker compose exec backend php artisan migrate:fresh --seed
-```
+3. Open in browser:
 
-4. Open in browser:
 ```bash
 http://localhost:3000
 ```
