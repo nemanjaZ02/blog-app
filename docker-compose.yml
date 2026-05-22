@@ -7,8 +7,8 @@ services:
       dockerfile: Dockerfile
     container_name: blog_backend
     working_dir: /var/www
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     volumes:
       - ./backend:/var/www
     command: php artisan serve --host=0.0.0.0 --port=8000
