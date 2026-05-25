@@ -28,6 +28,16 @@ docker compose up --build
 http://localhost:3000
 ```
 
+## Default Accounts
+
+| Email | Password | Role |
+
+| admin@example.com | password | Admin |
+
+| alice@example.com | password | User |
+
+| bob@example.com | password | User |
+
 ## Screenshots
 
 <img width="1905" alt="1" src="https://github.com/user-attachments/assets/bff33c10-29fb-403b-8dd0-fcbc85e773a2" />

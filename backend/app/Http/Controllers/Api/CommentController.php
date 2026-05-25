@@ -10,22 +10,18 @@ use Illuminate\Http\Request;
 class CommentController extends Controller
 {
     public function store(Request $request, Post $post)
-{
+    {
         $request->validate([
             'comment'    => ['required', 'string', 'min:1', 'max:1000'],
             'guest_name' => ['nullable', 'string', 'max:100'],
         ]);
 
-        try {
-            auth('sanctum')->setRequest($request)->authenticate();
-        } catch (\Exception $e) {
-            // guest, ignore
-        }
-        
+        $user = auth('sanctum')->user();
+
         $comment = $post->comments()->create([
             'comment'    => $request->comment,
-            'user_id'    => auth('sanctum')->id(),
-            'guest_name' => auth('sanctum')->check() ? null : ($request->guest_name ?? 'Anonymous'),
+            'user_id'    => $user?->id,
+            'guest_name' => $user ? null : ($request->guest_name ?? 'Anonymous'),
         ]);
 
         return response()->json($comment->load('user'), 201);
