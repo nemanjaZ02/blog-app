@@ -28,6 +28,20 @@ docker compose up --build
 http://localhost:3000
 ```
 
+## Seeding
+
+The database is seeded automatically on every `docker compose up` via a built-in script. To seed manually:
+
+```bash
+docker compose exec app php artisan db:seed
+```
+
+## Running Tests
+
+```bash
+docker compose exec app php artisan test
+```
+
 ## Default Accounts
 
 | Email | Password | Role |
