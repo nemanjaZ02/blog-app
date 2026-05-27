@@ -33,13 +33,13 @@ http://localhost:3000
 The database is seeded automatically on every `docker compose up` via a built-in script. To seed manually:
 
 ```bash
-docker compose exec app php artisan db:seed
+docker compose exec backend php artisan db:seed
 ```
 
 ## Running Tests
 
 ```bash
-docker compose exec app php artisan test
+docker compose exec backend php artisan test
 ```
 
 ## Default Accounts
