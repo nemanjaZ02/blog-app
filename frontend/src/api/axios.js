@@ -2,18 +2,15 @@ import axios from 'axios'
 
 const api = axios.create({
     baseURL: '/api',
+    withCredentials: true,
+    withXSRFToken: true,
     headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-    }
+    },
 })
 
-api.interceptors.request.use((config) => {
-    const token = localStorage.getItem('token')
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`
-    }
-    return config
-})
+export const getCsrfCookie = () =>
+    axios.get('/sanctum/csrf-cookie', { withCredentials: true })
 
 export default api

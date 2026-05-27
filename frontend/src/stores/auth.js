@@ -1,52 +1,47 @@
 import { defineStore } from 'pinia'
-import api from '../api/axios'
+import api, { getCsrfCookie } from '../api/axios'
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
-        user: (() => {
-            try {
-                return JSON.parse(localStorage.getItem('user')) || null
-            } catch {
-                return null
-            }
-        })(),
-        token: localStorage.getItem('token') || null,
+        user: null,
     }),
 
     getters: {
-        isLoggedIn: (state) => !!state.token && !!state.user,
+        isLoggedIn: (state) => !!state.user,
         isAdmin: (state) => state.user?.role === 'admin',
     },
 
     actions: {
+        async initAuth() {
+            try {
+                const response = await api.get('/me')
+                this.user = response.data
+            } catch {
+                this.user = null
+            }
+        },
+
         async register(name, email, password, password_confirmation) {
+            await getCsrfCookie()
             const response = await api.post('/register', {
-                name, email, password, password_confirmation
+                name, email, password, password_confirmation,
             })
-            this.token = response.data.token
             this.user = response.data.user
-            localStorage.setItem('token', this.token)
-            localStorage.setItem('user', JSON.stringify(this.user))
         },
 
         async login(email, password) {
+            await getCsrfCookie()
             const response = await api.post('/login', { email, password })
-            this.token = response.data.token
             this.user = response.data.user
-            localStorage.setItem('token', this.token)
-            localStorage.setItem('user', JSON.stringify(this.user))
         },
 
         async logout() {
             try {
                 await api.post('/logout')
-            } catch (e) {
+            } catch {
                 // ignore
             }
-            this.token = null
             this.user = null
-            localStorage.removeItem('token')
-            localStorage.removeItem('user')
         },
     },
 })

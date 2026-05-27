@@ -20,7 +20,11 @@ export default defineConfig({
       '/api': {
         target: 'http://backend:8000',
         changeOrigin: true,
-      }
+      },
+      '/sanctum': {
+        target: 'http://backend:8000',
+        changeOrigin: true,
+      },
     }
   }
 })
